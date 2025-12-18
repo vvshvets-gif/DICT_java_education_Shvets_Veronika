@@ -18,6 +18,11 @@ public class ChatBot {
         var age3 = scanner.nextInt();
         var age = CalculateAge(age1, age2, age3);
         SendMessage(String.format("Your age is %d; that's a good time to start programming!", age));
+        SendMessage("Now I will prove to you that I can count to any number you want!");
+        var length = scanner.nextInt();
+        for (int i = 0; i < length; i++) {
+            SendMessage(String.format("%d !", i));
+        }
     }
 
     private static void SendMessage(String message) {
