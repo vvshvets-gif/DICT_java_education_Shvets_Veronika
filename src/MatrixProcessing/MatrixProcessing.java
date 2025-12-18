@@ -48,4 +48,19 @@ class Matrix {
             System.out.println();
         }
     }
+
+    public Matrix multiply(Matrix other) {
+        if (this.cols != other.rows) return null;
+        Matrix result = new Matrix(this.rows, other.cols);
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < other.cols; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.cols; k++) {
+                    sum += this.data[i][k] * other.data[k][j];
+                }
+                result.setElement(i, j, sum);
+            }
+        }
+        return result;
+    }
 }
