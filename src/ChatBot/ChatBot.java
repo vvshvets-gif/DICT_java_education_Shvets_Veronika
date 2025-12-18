@@ -23,6 +23,38 @@ public class ChatBot {
         for (int i = 0; i < length; i++) {
             SendMessage(String.format("%d !", i));
         }
+        var questions = new Question[]{
+                new Question(
+                        "Choose correct answer!",
+                        new Answer[]{
+                                new Answer("Wrong answer.", false),
+                                new Answer("Wrong answer.", false),
+                                new Answer("Correct answer.", true),
+                                new Answer("Wrong answer.", false)
+                        }
+                )
+        };
+        for (Question question : questions) {
+            SendMessage(question.question);
+            for (int i = 0; i < question.answers.length; i++) {
+                var answer = question.answers[i];
+                var answerIndex = i;
+                SendMessage(String.format("%d. %s", ++answerIndex, answer.answer));
+            }
+            while (true) {
+                var index = scanner.nextInt();
+                if (index >= 1 && index <= question.answers.length) {
+                    var answer = question.answers[index - 1];
+                    if (answer.isCorrect) {
+                        SendMessage("Correct!");
+                        break;
+                    } else {
+                        SendMessage("Wrong!");
+                    }
+                }
+            }
+        }
+        SendMessage("Goodbye, have a nice day!");
     }
 
     private static void SendMessage(String message) {
@@ -35,5 +67,25 @@ public class ChatBot {
         var remainder7 = age3 % 7;
         var age = (remainder3 * 70 + remainder5 * 21 + remainder7 * 15) % 105;
         return age;
+    }
+
+    static class Question {
+        public String question;
+        public Answer[] answers;
+
+        Question(String question, Answer[] answers) {
+            this.question = question;
+            this.answers = answers;
+        }
+    }
+
+    static class Answer {
+        public String answer;
+        public boolean isCorrect;
+
+        Answer(String answer, boolean isCorrect) {
+            this.answer = answer;
+            this.isCorrect = isCorrect;
+        }
     }
 }
