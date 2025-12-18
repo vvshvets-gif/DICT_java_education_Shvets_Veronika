@@ -1,15 +1,52 @@
 package TicTacToe;
-
 import java.util.Scanner;
 
 public class TicTacToe {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter cells: ");
-        String input = scanner.next();
-        printGrid(input.toCharArray());
+        char[] cells = "_________".toCharArray();
+        printGrid(cells);
 
+        char currentPlayer = 'X';
+        while (true) {
+            System.out.print("Enter the coordinates: ");
+            String inputX = scanner.next();
+            String inputY = scanner.next();
 
+            if (!isNumber(inputX) || !isNumber(inputY)) {
+                System.out.println("You should enter numbers!");
+                continue;
+            }
+
+            int row = Integer.parseInt(inputX);
+            int col = Integer.parseInt(inputY);
+
+            if (row < 1 || row > 3 || col < 1 || col > 3) {
+                System.out.println("Coordinates should be from 1 to 3!");
+                continue;
+            }
+
+            int index = (row - 1) * 3 + (col - 1);
+            if (cells[index] != '_') {
+                System.out.println("This cell is occupied! Choose another one!");
+                continue;
+            }
+
+            cells[index] = currentPlayer;
+            printGrid(cells);
+
+            String state = checkState(cells);
+            if (!state.equals("Game not finished")) {
+                System.out.println(state);
+                break;
+            }
+
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        }
+    }
+
+    private static boolean isNumber(String s) {
+        return s.matches("\\d+");
     }
 
     public static void printGrid(char[] cells) {
@@ -21,17 +58,11 @@ public class TicTacToe {
     }
 
     public static String checkState(char[] cells) {
-        int xCount = 0, oCount = 0, empty = 0;
-        for (char c : cells) {
-            if (c == 'X') xCount++;
-            else if (c == 'O') oCount++;
-            else empty++;
-        }
-
         boolean xWins = checkWin(cells, 'X');
         boolean oWins = checkWin(cells, 'O');
+        int empty = 0;
+        for (char c : cells) if (c == '_') empty++;
 
-        if (Math.abs(xCount - oCount) >= 2 || (xWins && oWins)) return "Impossible";
         if (xWins) return "X wins";
         if (oWins) return "O wins";
         if (empty == 0) return "Draw";
