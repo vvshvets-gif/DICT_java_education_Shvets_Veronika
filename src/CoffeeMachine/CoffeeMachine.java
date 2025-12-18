@@ -2,20 +2,28 @@ package CoffeeMachine;
 
 public class CoffeeMachine {
     public static void main(String[] args) {
-        System.out.println("Starting to make a coffee");
-        System.out.println("Grinding coffee beans");
-        System.out.println("Boiling water");
-        System.out.println("Mixing boiled water with crushed coffee beans");
-        System.out.println("Pouring coffee into the cup");
-        System.out.println("Pouring some milk into the cup");
-        System.out.println("Coffee is ready!");
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
+        System.out.println("Write how many ml of water the coffee machine has:");
+        int hasWater = scanner.nextInt();
+        System.out.println("Write how many ml of milk the coffee machine has:");
+        int hasMilk = scanner.nextInt();
+        System.out.println("Write how many grams of coffee beans the coffee machine has:");
+        int hasBeans = scanner.nextInt();
         System.out.println("Write how many cups of coffee you will need:");
-        int cups = scanner.nextInt();
-        System.out.println("For " + cups + " cups of coffee you will need:");
-        System.out.println(cups * 200 + " ml of water");
-        System.out.println(cups * 50 + " ml of milk");
-        System.out.println(cups * 15 + " g of coffee beans");
+        int needCups = scanner.nextInt();
+
+        int canMakeWater = hasWater / 200;
+        int canMakeMilk = hasMilk / 50;
+        int canMakeBeans = hasBeans / 15;
+        int possibleCups = Math.min(canMakeWater, Math.min(canMakeMilk, canMakeBeans));
+
+        if (possibleCups == needCups) {
+            System.out.println("Yes, I can make that amount of coffee");
+        } else if (possibleCups > needCups) {
+            System.out.println("Yes, I can make that amount of coffee (and even " + (possibleCups - needCups) + " more than that)");
+        } else {
+            System.out.println("No, I can make only " + possibleCups + " cups of coffee");
+        }
     }
 }
